@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE shim SYSTEM "file:///usr/share/emane/dtd/shim.dtd">
+<shim name="DLEPLAYER SHIM" library="emanedleplayer">
+  <paramlist name="macaddress">
+    <item value="01 0a:B2:C3:D4:E5:01"/>
+    <item value="02 0a:B2:C3:D4:E5:02"/>
+  </paramlist>
+
+  <param name="etheraddroui" value="01:02:03"/>
+  <param name="sinrmin" value="0.0"/>
+  <param name="sinrmax" value="20.0"/>
+
+  <!-- dlep service config -->
+  <param name="acktimeout"            value="3"/>
+  <param name="ackprobabilty"         value="100"/>
+  <param name="configfile"            value=""/>
+  <param name="discoveryiface"        value="eth0"/>
+  <param name="discoveryinterval"     value="5"/>
+  <param name="discoverymcastaddress" value="225.0.0.45"/>
+  <param name="discoveryport"         value="30002"/>
+  <param name="discoveryenable"       value="1"/>
+
+  <param name="destinationadvertenable"        value="1"/>
+  <param name="destinationadvertiface"         value="emane0"/>
+  <param name="destinationadvertsend-interval" value="5"/>
+  <param name="destinationadvertmcast-address" value="225.6.7.8"/>
+  <param name="destinationadvertport"          value="33445"/>
+  <param name="destinationadverthold-interval" value="0"/>
+  <param name="destinationadvertexpire-count"  value="0"/>
+
+  <param name="experimentname"        value="rfpipe"/>
+  <param name="heartbeatinterval"     value="5"/>
+  <param name="heartbeatthreshold"    value="2"/>
+  <param name="localtype"             value="modem"/>
+  <param name="loglevel"              value="1"/>
+  <param name="logfile"               value="dlep.log"/>
+  <param name="metricfile"            value="metrics.xml"/>
+  <param name="peertype"              value="emane"/>
+  <param name="sendtries"             value="3"/>
+  <param name="sessionport"           value="30003"/>
+  <param name="extensions"            value=""/>
+
+</shim>
+

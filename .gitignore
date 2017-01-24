@@ -1,0 +1,43 @@
+# autotools
+Makefile
+Makefile.in
+configure
+libtool
+config
+config.status
+config.log
+aclocal.m4
+autom4te.cache
+*.o
+compile
+config.guess
+config.sub
+depcomp
+install-sh
+libtool.m4
+ltmain.sh
+ltoptions.m4
+ltsugar.m4
+ltversion.m4
+lt~obsolete.m4
+missing
+
+# object files/dependencies
+*.la
+*.lo
+*.o
+**/.deps
+**/.libs
+
+# rpm
+emane-layer-dlep.spec
+.rpmbuild
+
+# deb
+.debbuild
+
+# dist
+emane-layer-dlep*.tar.gz
+
+# sample XML
+src/xml/emanelayerdlep.xml
