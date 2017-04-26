@@ -22,7 +22,9 @@ EXTRA_DIST = \
 
 libemanelayerdlep_la_LIBADD= \
  $(libemane_LIBS) \
- $(libdlep_LIBS)                        
+ $(libdlep_LIBS)  \
+ -lboost_system   \
+ -lboost_thread
 
 libemanelayerdlep_la_LDFLAGS= \
  -avoid-version
