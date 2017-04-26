@@ -1,0 +1,54 @@
+Summary: EMANE - Extendable Mobile Ad-hoc Network Emultor
+Name: emane-layer-dlep
+Version: @VERSION@
+Release: 1%{?dist}
+License: BSD
+Group: Applications/System
+URL: http://adjacentlink.com
+Source0: %{name}-%{version}.tar.gz
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
+Requires: emane >= 1.0.1
+Vendor: Adjacent Link LLC
+
+%description
+EMANE DLEP layer is  an adaptor between DLEP Modem library API and EMANE R2RI messages.
+
+%package emane-layer-dlep
+Summary: EMANE DLEP layer
+Requires: emane >= %{version}
+Group: Libraries
+
+%description emane-layer-dlep
+EMANE DLEP layer located above mac layer used to interface with DLEP Moem library API and EMANE R2RI messages.
+
+%prep
+%setup -q
+
+%build
+%configure
+make
+
+%install
+make DESTDIR=${RPM_BUILD_ROOT} install
+find ${RPM_BUILD_ROOT} -name '*.a' -exec rm '{}'  \;
+find ${RPM_BUILD_ROOT} -name '*.la' -exec rm '{}' \;
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%post
+/sbin/ldconfig
+
+%files emane-layer-dlep
+%defattr(-,root,root,-)
+%{_libdir}/libemanelayerdlep.so
+%doc %{_datadir}/emane-layer-dlep/xml/emanelayerdlep.xml
+
+%doc AUTHORS
+%doc COPYING
+%doc ChangeLog
+%doc NEWS
+%doc README
+%doc SPONSOR
+
+%changelog

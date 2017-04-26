@@ -1,0 +1,13 @@
+Source: emane-layer-dlep
+Section: net
+Priority: extra
+Maintainer: Adjacent Link LLC <emane@adjacentlink.com>
+Build-Depends: debhelper (>= 8), autotools-dev
+Standards-Version: 3.9.3
+Homepage: https://github.com/adjacentlink/emane-layer-dlep
+
+Package: emane-layer-dlep
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description:  EMANE DLEP layer
