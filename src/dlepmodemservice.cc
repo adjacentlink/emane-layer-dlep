@@ -340,6 +340,7 @@ void EMANE::R2RI::DLEP::ModemService::handleControlMessages(const EMANE::Control
               {
                 handleFlowControlMessage_i();
               }
+            break;
 
             case EMANE::Controls::SerializedControlMessage::IDENTIFIER:
               {
@@ -379,6 +380,7 @@ void EMANE::R2RI::DLEP::ModemService::handleControlMessages(const EMANE::Control
 
                         delete p;
                       }
+                    break;
 
                     case EMANE::Controls::FlowControlControlMessage::IDENTIFIER:
                       {
