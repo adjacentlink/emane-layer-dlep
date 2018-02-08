@@ -119,7 +119,11 @@ EMANE::R2RI::DLEP::ModemService::ModemService(NEMId id,
 
   memset(&etherBroadcastAddr_, 0xFF, sizeof(etherBroadcastAddr_));
 
+  const std::string logfile = "persist/" + std::to_string(id) + "/radio/var/log/dlep-modem.log";
+
   dlepConfiguration_ = DefaultDlepConfiguration;
+
+  dlepConfiguration_["logfile"].value = logfile;
 }
 
 
