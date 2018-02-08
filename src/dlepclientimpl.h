@@ -142,12 +142,14 @@ namespace EMANE
          std::string idLatency;
          std::string idResourcesRx;
          std::string idResourcesTx;
+         std::string idResources;
          std::string idRLQRx;
          std::string idRLQTx;
 
          std::uint64_t valLatency;
          std::uint8_t  valResourcesRx;
          std::uint8_t  valResourcesTx;
+         std::uint8_t  valResources;
          std::uint8_t  valRLQRx;
          std::uint8_t  valRLQTx;
 
@@ -155,11 +157,13 @@ namespace EMANE
          idLatency{LLDLEP::ProtocolStrings::Latency},
          idResourcesRx{LLDLEP::ProtocolStrings::Resources_Receive},
          idResourcesTx{LLDLEP::ProtocolStrings:: Resources_Transmit},
+         idResources{LLDLEP::ProtocolStrings:: Resources},
          idRLQRx{LLDLEP::ProtocolStrings::Relative_Link_Quality_Receive},
          idRLQTx{LLDLEP::ProtocolStrings::Relative_Link_Quality_Transmit},
          valLatency{0},
          valResourcesRx{100},
          valResourcesTx{100},
+         valResources{100},
          valRLQRx{0},
          valRLQTx{100}
        { }

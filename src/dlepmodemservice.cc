@@ -786,11 +786,16 @@ void EMANE::R2RI::DLEP::ModemService::load_destination_metrics_i(LLDLEP::DataIte
    // latency
    dataItems.push_back(getDataItem_i(values.idLatency, values.valLatency));
 
+#if 0 // not supported in dlep current default config yet
    // resources Rx
    dataItems.push_back(getDataItem_i(values.idResourcesRx, values.valResourcesRx));
 
    // resources Tx
    dataItems.push_back(getDataItem_i(values.idResourcesTx, values.valResourcesTx));
+#endif
+
+   // resources 
+   dataItems.push_back(getDataItem_i(values.idResources, values.valResources));
 
    // rlq Rx
    dataItems.push_back(getDataItem_i(values.idRLQRx, values.valRLQRx));
