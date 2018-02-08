@@ -16,15 +16,15 @@
   <param name="configfile"            value=""/>
   <param name="discoveryiface"        value="eth0"/>
   <param name="discoveryinterval"     value="5"/>
-  <param name="discoverymcastaddress" value="225.0.0.45"/>
-  <param name="discoveryport"         value="30002"/>
+  <param name="discoverymcastaddress" value="225.0.0.117"/>
+  <param name="discoveryport"         value="4854"/>
   <param name="discoveryenable"       value="1"/>
 
   <param name="destinationadvertenable"        value="1"/>
   <param name="destinationadvertiface"         value="emane0"/>
   <param name="destinationadvertsend-interval" value="5"/>
-  <param name="destinationadvertmcast-address" value="225.6.7.8"/>
-  <param name="destinationadvertport"          value="33445"/>
+  <param name="destinationadvertmcast-address" value="225.0.0.118"/>
+  <param name="destinationadvertport"          value="5854"/>
   <param name="destinationadverthold-interval" value="0"/>
   <param name="destinationadvertexpire-count"  value="0"/>
 
@@ -37,7 +37,7 @@
   <param name="metricfile"            value="metrics.xml"/>
   <param name="peertype"              value="emane"/>
   <param name="sendtries"             value="3"/>
-  <param name="sessionport"           value="30003"/>
+  <param name="sessionport"           value="4854"/>
   <param name="extensions"            value=""/>
 
 </shim>

@@ -204,11 +204,21 @@ void EMANE::R2RI::DLEP::ShimLayer::processUpstreamControl(const ControlMessages 
             {
               // self info to the front, consume
               controlMessages.push_front(pMessage);
+
+              LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
+                                      DEBUG_LEVEL, 
+                                      "SHIMI %03hu %s::%s consume R2RISelfMetricControlMessage", 
+                                      id_, __MODULE__, __func__);
             }
           break;
 
           case EMANE::Controls::R2RINeighborMetricControlMessage::IDENTIFIER:
             {
+              LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
+                                      DEBUG_LEVEL, 
+                                      "SHIMI %03hu %s::%s consume R2RINeighborMetricControlMessage", 
+                                      id_, __MODULE__, __func__);
+
               // to the back, consume
               controlMessages.push_back(pMessage);
             }
@@ -216,6 +226,11 @@ void EMANE::R2RI::DLEP::ShimLayer::processUpstreamControl(const ControlMessages 
 
           case EMANE::Controls::R2RIQueueMetricControlMessage::IDENTIFIER:
             {
+              LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
+                                      DEBUG_LEVEL, 
+                                      "SHIMI %03hu %s::%s consume R2RIQueueMetricControlMessage", 
+                                      id_, __MODULE__, __func__);
+
               // to the back, consume
               controlMessages.push_back(pMessage);
             }
@@ -223,12 +238,18 @@ void EMANE::R2RI::DLEP::ShimLayer::processUpstreamControl(const ControlMessages 
 
           case EMANE::Controls::FlowControlControlMessage::IDENTIFIER:
             {
+              LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
+                                      DEBUG_LEVEL, 
+                                      "SHIMI %03hu %s::%s forward and consume FlowControlControlMessage", 
+                                      id_, __MODULE__, __func__);
+
               // transport is expecting these too
               clones.push_back(pMessage->clone()); 
 
               // to the back
               controlMessages.push_back(pMessage);
             }
+          break;
 
           case EMANE::Controls::SerializedControlMessage::IDENTIFIER:
             {
@@ -239,6 +260,11 @@ void EMANE::R2RI::DLEP::ShimLayer::processUpstreamControl(const ControlMessages 
                 {
                   case EMANE::Controls::R2RISelfMetricControlMessage::IDENTIFIER:
                     {
+                       LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
+                                               DEBUG_LEVEL, 
+                                               "SHIMI %03hu %s::%s consume R2RISelfMetricControlMessage", 
+                                               id_, __MODULE__, __func__);
+
                       // self info to the front, consume
                       controlMessages.push_front(pMessage);
                     }
@@ -246,6 +272,11 @@ void EMANE::R2RI::DLEP::ShimLayer::processUpstreamControl(const ControlMessages 
 
                   case EMANE::Controls::R2RINeighborMetricControlMessage::IDENTIFIER:
                     {
+                       LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
+                                               DEBUG_LEVEL, 
+                                               "SHIMI %03hu %s::%s consume R2RINeighborMetricControlMessage", 
+                                               id_, __MODULE__, __func__);
+
                       // to the back, consume
                       controlMessages.push_back(pMessage);
                     }
@@ -253,6 +284,11 @@ void EMANE::R2RI::DLEP::ShimLayer::processUpstreamControl(const ControlMessages 
 
                   case EMANE::Controls::R2RIQueueMetricControlMessage::IDENTIFIER:
                     {
+                       LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
+                                               DEBUG_LEVEL, 
+                                               "SHIMI %03hu %s::%s consume R2RIQueueMetricControlMessage", 
+                                               id_, __MODULE__, __func__);
+
                       // to the back, consume
                       controlMessages.push_back(pMessage);
                     }
@@ -260,19 +296,25 @@ void EMANE::R2RI::DLEP::ShimLayer::processUpstreamControl(const ControlMessages 
 
                   case EMANE::Controls::FlowControlControlMessage::IDENTIFIER:
                     {
+                      LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
+                                               DEBUG_LEVEL, 
+                                               "SHIMI %03hu %s::%s forward and consume FlowControlControlMessage", 
+                                               id_, __MODULE__, __func__);
+
                       // transport is expecting these too
                       clones.push_back(pMessage->clone()); 
 
                       // to the back
                       controlMessages.push_back(pMessage);
                     }
+                  break;
 
                   default:
                     clones.push_back(pMessage->clone()); 
 
                     LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                                            DEBUG_LEVEL, 
-                                           "SHIMI %03hu %s::%s forward unknown msg id %hu", 
+                                           "SHIMI %03hu %s::%s pass thru unknown msg id %hu", 
                                            id_, __MODULE__, __func__, pMessage->getId());
                 }
             }
@@ -283,13 +325,18 @@ void EMANE::R2RI::DLEP::ShimLayer::processUpstreamControl(const ControlMessages 
 
                LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                                       DEBUG_LEVEL, 
-                                      "SHIMI %03hu %s::%s forward unknown msg id %hu", 
+                                      "SHIMI %03hu %s::%s pass thru unknown msg id %hu", 
                                       id_, __MODULE__, __func__, pMessage->getId());
       }
    }
 
   if(! clones.empty())
    {
+      LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
+                               DEBUG_LEVEL,
+                               "SHIMI %03hu %s::%s pass thru %zu msgs", 
+                               id_, __MODULE__, __func__, clones.size());
+
      // pass thru
      sendUpstreamControl(clones);
    }
@@ -304,7 +351,8 @@ void EMANE::R2RI::DLEP::ShimLayer::processDownstreamControl(const ControlMessage
 {
   LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s", id_, __MODULE__, __func__);
+                          "SHIMI %03hu %s::%s pass thru %zu msgs", 
+                          id_, __MODULE__, __func__, msgs.size());
 
   // pass thru
   sendDownstreamControl(clone(msgs));
@@ -317,7 +365,8 @@ void EMANE::R2RI::DLEP::ShimLayer::processUpstreamPacket(UpstreamPacket & pkt,
 {
   LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s", id_, __MODULE__, __func__);
+                          "SHIMI %03hu %s::%s pass thru pkt len %zu and %zu msgs", 
+                          id_, __MODULE__, __func__, pkt.length(), msgs.size());
 
   // pass thru
   sendUpstreamPacket(pkt, clone(msgs));
@@ -330,7 +379,8 @@ void EMANE::R2RI::DLEP::ShimLayer::processDownstreamPacket(DownstreamPacket & pk
 {
   LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s", id_, __MODULE__, __func__);
+                          "SHIMI %03hu %s::%s pass thru pkt len %zu and %zu msgs", 
+                          id_, __MODULE__, __func__, pkt.length(), msgs.size());
 
   // pass thru
   sendDownstreamPacket(pkt, clone(msgs));

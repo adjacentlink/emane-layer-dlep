@@ -78,7 +78,7 @@ namespace
       { "logfile",                 {"log-file",                "s",  "dlep.log",    "file to write log messages to" } },
       { "peertype",                {"peer-type",               "s",  "emane",       "peer type data item value" } },
       { "sendtries",               {"send-tries",              "i",  "3",           "number of times to send a signal before giving up" } },
-      { "sessionport",             {"session-port",            "i",  "30003",       "tcp port number session connections" } },
+      { "sessionport",             {"session-port",            "i",  "4854",        "tcp port number session connections" } },
       { "extensions",              {"extensions",              "iv", "",            "list of extension ids to support" } },
 
       { "protocolconfigfile",      {"protocol-config-file",    "s",  "protocol-config.xml", "xml file containing dlep protocol config." } },
@@ -86,18 +86,18 @@ namespace
 
       { "discoveryiface",          {"discovery-iface",         "s",  "eth0",        "interface for the peerdiscovery protocol" } },
       { "discoveryinterval",       {"discovery-interval",      "i",  "5",           "time between sending peerdiscovery signals" } },
-      { "discoverymcastaddress",   {"discovery-mcast-address", "a",  "225.0.0.45",  "address to send peerdiscovery signals to" } },
-      { "discoveryport",           {"discovery-port",          "i",  "30002",       "port to send peerdiscovery signals to" } },
+      { "discoverymcastaddress",   {"discovery-mcast-address", "a",  "225.0.0.117", "address to send peerdiscovery signals to" } },
+      { "discoveryport",           {"discovery-port",          "i",  "4854",        "port to send peerdiscovery signals to" } },
       { "discoveryenable",         {"discovery-enable",        "b",  "1",           "should the router run the peerdiscovery protocol?" } },
 
-      { "destinationadvertenable",       {"destination-advert-enable",        "b",   "1",         "dest advert enable/disable" } },
-      { "destinationadvertiface",        {"destination-advert-iface",         "s",   "emane0",    "dest advert interface" } },
-      { "destinationadvertsendinterval", {"destination-advert-send-interval", "i",   "5",         "dest advert tx interval" } },
-      { "destinationadvertmcastaddress", {"destination-advert-mcast-address", "a",   "225.6.7.8", "dest advert multicast address" } },
-      { "destinationadvertport",         {"destination-advert-port",          "i",   "33445",     "dest advert port" } },
-      { "destinationadvertholdinterval", {"destination-advert-hold-interval", "i",   "0",         "dest advert hold value, 0 = hold" } },
-      { "destinationadvertexpirecount",  {"destination-advert-expire-count",  "i",   "0",         "dest advert expire count, 0 = hold" } },
-      { "destinationadvertrfid",         {"destination-advert-rf-id",         "iv",  "",          "dest advert mac id (NEMId)" } },
+      { "destinationadvertenable",       {"destination-advert-enable",        "b",   "1",           "dest advert enable/disable" } },
+      { "destinationadvertiface",        {"destination-advert-iface",         "s",   "emane0",      "dest advert interface" } },
+      { "destinationadvertsendinterval", {"destination-advert-send-interval", "i",   "5",           "dest advert tx interval" } },
+      { "destinationadvertmcastaddress", {"destination-advert-mcast-address", "a",   "225.0.0.118", "dest advert multicast address" } },
+      { "destinationadvertport",         {"destination-advert-port",          "i",   "5854",        "dest advert port" } },
+      { "destinationadvertholdinterval", {"destination-advert-hold-interval", "i",   "0",           "dest advert hold value, 0 = hold" } },
+      { "destinationadvertexpirecount",  {"destination-advert-expire-count",  "i",   "0",           "dest advert expire count, 0 = hold" } },
+      { "destinationadvertrfid",         {"destination-advert-rf-id",         "iv",  "",            "dest advert mac id (NEMId)" } },
    };
 
 }
