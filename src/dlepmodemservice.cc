@@ -71,10 +71,10 @@ namespace
       { "acktimeout",              {"ack-timeout",             "i",  "3",           "seconds to wait for ack signals" } },
       { "ackprobability",          {"ack-probability",         "i",  "100",         "ack probabilty percent 0-100" } },
       { "configfile",              {"config-file",             "f",  "",            "xml config file containing parameter settings" } },
-      { "heartbeatinterval",       {"heartbeat-interval",      "i",  "5",           "time between sending heartbeat signals" } },
+      { "heartbeatinterval",       {"heartbeat-interval",      "i",  "10",          "time between sending heartbeat signals" } },
       { "heartbeatthreshold",      {"heartbeat-threshold",     "i",  "2",           "number of missed heartbeats to tolerate" } },
       { "localtype",               {"local-type",              "s",  "modem",       "which dlep role to play, modem or router?" } },
-      { "loglevel",                {"log-level",               "i",  "1",           "1=most logging, 5=least" } },
+      { "loglevel",                {"log-level",               "i",  "2",           "1=most logging, 5=least" } },
       { "logfile",                 {"log-file",                "s",  "dlep.log",    "file to write log messages to" } },
       { "peertype",                {"peer-type",               "s",  "emane",       "peer type data item value" } },
       { "sendtries",               {"send-tries",              "i",  "3",           "number of times to send a signal before giving up" } },
@@ -85,14 +85,14 @@ namespace
       { "protocolconfigschema",    {"protocol-config-schema",  "s",  "protocol-config.xsd", "xml protocol config schema." } },
 
       { "discoveryiface",          {"discovery-iface",         "s",  "eth0",        "interface for the peerdiscovery protocol" } },
-      { "discoveryinterval",       {"discovery-interval",      "i",  "5",           "time between sending peerdiscovery signals" } },
+      { "discoveryinterval",       {"discovery-interval",      "i",  "10",          "time between sending peerdiscovery signals" } },
       { "discoverymcastaddress",   {"discovery-mcast-address", "a",  "225.0.0.117", "address to send peerdiscovery signals to" } },
       { "discoveryport",           {"discovery-port",          "i",  "4854",        "port to send peerdiscovery signals to" } },
       { "discoveryenable",         {"discovery-enable",        "b",  "1",           "should the router run the peerdiscovery protocol?" } },
 
       { "destinationadvertenable",       {"destination-advert-enable",        "b",   "1",           "dest advert enable/disable" } },
       { "destinationadvertiface",        {"destination-advert-iface",         "s",   "emane0",      "dest advert interface" } },
-      { "destinationadvertsendinterval", {"destination-advert-send-interval", "i",   "5",           "dest advert tx interval" } },
+      { "destinationadvertsendinterval", {"destination-advert-send-interval", "i",   "10",          "dest advert tx interval" } },
       { "destinationadvertmcastaddress", {"destination-advert-mcast-address", "a",   "225.0.0.118", "dest advert multicast address" } },
       { "destinationadvertport",         {"destination-advert-port",          "i",   "5854",        "dest advert port" } },
       { "destinationadvertholdinterval", {"destination-advert-hold-interval", "i",   "0",           "dest advert hold value, 0 = hold" } },
@@ -119,6 +119,7 @@ EMANE::R2RI::DLEP::ModemService::ModemService(NEMId id,
 
   memset(&etherBroadcastAddr_, 0xFF, sizeof(etherBroadcastAddr_));
 
+  // set default for emane-dlep-demo log file dir
   const std::string logfile = "persist/" + std::to_string(id) + "/radio/var/log/dlep-modem.log";
 
   dlepConfiguration_ = DefaultDlepConfiguration;
@@ -554,10 +555,21 @@ void EMANE::R2RI::DLEP::ModemService::handleMetricMessage_i(const EMANE::Control
 
         iter->second.metrics_.valLatency = avgQueueDelayMicroseconds_;
 
-        iter->second.metrics_.valRLQRx   = getRLQ_i(metric.getId(),
+        iter->second.metrics_.valResources = 50;
+
+        iter->second.metrics_.valRLQTx =
+          iter->second.metrics_.valRLQRx = getRLQ_i(metric.getId(),
                                                     metric.getSINRAvgdBm(),
                                                     metric.getNumRxFrames(),
                                                     metric.getNumMissedFrames());
+
+#if 0
+        // push remote lan up to router example
+        iter->second.metrics_.valIPv4AdvLan = 
+                       LLDLEP::Div_u8_ipv4_u8_t{LLDLEP::DataItem::IPFlags::add, 
+                                                boost::asio::ip::address_v4::from_string("0.0.0.0"),
+                                             32};
+#endif
 
         // send nbr up/update
         send_destination_update_i(iter->second, isNewNbr);
@@ -687,7 +699,9 @@ void EMANE::R2RI::DLEP::ModemService::send_peer_update_i()
 }
 
 
-void EMANE::R2RI::DLEP::ModemService::send_destination_update_i(const EMANE::R2RI::DLEP::ModemService::NeighborInfo & nbrInfo, bool isNewNbr)
+void EMANE::R2RI::DLEP::ModemService::send_destination_update_i(
+     const EMANE::R2RI::DLEP::ModemService::NeighborInfo & nbrInfo, 
+     bool isNewNbr)
 {
   if(pDlepClient_)
     {
@@ -786,14 +800,6 @@ void EMANE::R2RI::DLEP::ModemService::load_destination_metrics_i(LLDLEP::DataIte
    // latency
    dataItems.push_back(getDataItem_i(values.idLatency, values.valLatency));
 
-#if 0 // not supported in dlep current default config yet
-   // resources Rx
-   dataItems.push_back(getDataItem_i(values.idResourcesRx, values.valResourcesRx));
-
-   // resources Tx
-   dataItems.push_back(getDataItem_i(values.idResourcesTx, values.valResourcesTx));
-#endif
-
    // resources 
    dataItems.push_back(getDataItem_i(values.idResources, values.valResources));
 
@@ -803,6 +809,9 @@ void EMANE::R2RI::DLEP::ModemService::load_destination_metrics_i(LLDLEP::DataIte
    // rlq Tx
    dataItems.push_back(getDataItem_i(values.idRLQTx, values.valRLQTx));
 
+   // adv lan
+   dataItems.push_back(getDataItem_i(values.idIPv4AdvLan, values.valIPv4AdvLan));
+   
    for(auto & item : dataItems)
     {
        LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),

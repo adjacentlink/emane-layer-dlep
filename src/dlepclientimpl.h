@@ -140,32 +140,34 @@ namespace EMANE
          DataRateMetricInfo  dataRateInfo;
 
          std::string idLatency;
-         std::string idResourcesRx;
-         std::string idResourcesTx;
          std::string idResources;
          std::string idRLQRx;
          std::string idRLQTx;
+         std::string idIPv4AdvLan;
 
          std::uint64_t valLatency;
-         std::uint8_t  valResourcesRx;
-         std::uint8_t  valResourcesTx;
          std::uint8_t  valResources;
          std::uint8_t  valRLQRx;
          std::uint8_t  valRLQTx;
+         LLDLEP::Div_u8_ipv4_u8_t valIPv4AdvLan;
 
         DestinationMetricInfo() :
          idLatency{LLDLEP::ProtocolStrings::Latency},
-         idResourcesRx{LLDLEP::ProtocolStrings::Resources_Receive},
-         idResourcesTx{LLDLEP::ProtocolStrings:: Resources_Transmit},
          idResources{LLDLEP::ProtocolStrings:: Resources},
          idRLQRx{LLDLEP::ProtocolStrings::Relative_Link_Quality_Receive},
          idRLQTx{LLDLEP::ProtocolStrings::Relative_Link_Quality_Transmit},
-         valLatency{0},
-         valResourcesRx{100},
-         valResourcesTx{100},
-         valResources{100},
-         valRLQRx{0},
-         valRLQTx{100}
+         idIPv4AdvLan{LLDLEP::ProtocolStrings::IPv4_Attached_Subnet},
+         valLatency{},
+
+#if 0    // depricated
+         valResourcesRx{},
+         valResourcesTx{},
+#else
+         valResources{},
+#endif
+         valRLQRx{},
+         valRLQTx{},
+         valIPv4AdvLan{}
        { }
       };
 
@@ -190,9 +192,9 @@ namespace EMANE
 
           void peer_up(const LLDLEP::PeerInfo & peerInfo) override;
 
-          void peer_down(const std::string &peerId);
+          void peer_down(const std::string &peerId) override;
 
-          void peer_update(const std::string & peerId, const LLDLEP::DataItems & dataItems);
+          void peer_update(const std::string & peerId, const LLDLEP::DataItems & dataItems) override;
 
           std::string destination_up(const std::string & peerId,
                               const LLDLEP::DlepMac & macAddress,

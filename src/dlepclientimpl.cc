@@ -202,7 +202,7 @@ EMANE::R2RI::DLEP::DlepClientImpl::peer_up(const LLDLEP::PeerInfo & peerInfo)
 {
     LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s peer %s, type %s, extensions %zu, experiment name %zu, dataItems %zu", 
+                          "SHIMI %03hu %s::%s RX peer %s, type %s, extensions %zu, experiment name %zu, dataItems %zu", 
                           id_, __MODULE__, __func__, 
                           peerInfo.peer_id.c_str(), 
                           peerInfo.peer_type.c_str(), 
@@ -214,7 +214,7 @@ EMANE::R2RI::DLEP::DlepClientImpl::peer_up(const LLDLEP::PeerInfo & peerInfo)
       {
          LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s item metric type %hhu, value [%s]", 
+                          "SHIMI %03hu %s::%s RX item metric type %hhu, value [%s]", 
                           id_, __MODULE__, __func__, 
                           item.id, 
                           item.to_string().c_str());
@@ -229,7 +229,7 @@ void EMANE::R2RI::DLEP::DlepClientImpl::peer_down(const std::string & peerId)
 {
     LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s peer %s", 
+                          "SHIMI %03hu %s::%s RX peer %s", 
                           id_, __MODULE__, __func__, 
                           peerId.c_str());
 
@@ -242,7 +242,7 @@ void EMANE::R2RI::DLEP::DlepClientImpl::peer_update(const std::string & peerId,
 {
     LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s peer %s, %zd dataItems", 
+                          "SHIMI %03hu %s::%s RX peer %s, %zd dataItems", 
                           id_, __MODULE__, __func__, 
                           peerId.c_str(),
                           dataItems.size());
@@ -251,7 +251,7 @@ void EMANE::R2RI::DLEP::DlepClientImpl::peer_update(const std::string & peerId,
       {
          LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s item metric type %hhu, value [%s]", 
+                          "SHIMI %03hu %s::%s RX item metric type %hhu, value [%s]", 
                           id_, __MODULE__, __func__, 
                           item.id, 
                           item.to_string().c_str());
@@ -267,7 +267,7 @@ EMANE::R2RI::DLEP::DlepClientImpl::destination_up(const std::string & peerId,
 {
     LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s peer %s, mac %s, dataItems %zu", 
+                          "SHIMI %03hu %s::%s RX peer %s, mac %s, dataItems %zu", 
                           id_, __MODULE__, __func__, 
                           peerId.c_str(), 
                           macAddress.to_string().c_str(), 
@@ -277,7 +277,7 @@ EMANE::R2RI::DLEP::DlepClientImpl::destination_up(const std::string & peerId,
       {
          LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s item metric type %hhu, value [%s]", 
+                          "SHIMI %03hu %s::%s RX item metric type %hhu, value [%s]", 
                           id_, __MODULE__, __func__, 
                           item.id, 
                           item.to_string().c_str());
@@ -297,7 +297,7 @@ EMANE::R2RI::DLEP::DlepClientImpl::destination_update(const std::string & peerId
 {
     LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s peer %s, mac %s, dataItems %zu", 
+                          "SHIMI %03hu %s::%s RX peer %s, mac %s, dataItems %zu", 
                           id_, __MODULE__, __func__, 
                           peerId.c_str(), 
                           macAddress.to_string().c_str(), 
@@ -307,7 +307,7 @@ EMANE::R2RI::DLEP::DlepClientImpl::destination_update(const std::string & peerId
       {
          LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s item metric type %hhu, value [%s]", 
+                          "SHIMI %03hu %s::%s RX item metric type %hhu, value [%s]", 
                           id_, __MODULE__, __func__, 
                           item.id, 
                           item.to_string().c_str());
@@ -324,7 +324,7 @@ EMANE::R2RI::DLEP::DlepClientImpl::destination_down(const std::string & peerId,
 {
     LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s peer %s, mac %s", 
+                          "SHIMI %03hu %s::%s RX peer %s, mac %s", 
                           id_, __MODULE__, __func__, 
                           peerId.c_str(), 
                           macAddress.to_string().c_str());
@@ -340,7 +340,7 @@ EMANE::R2RI::DLEP::DlepClientImpl::credit_request(const std::string & peerId,
 {
     LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s peer %s, mac %s", 
+                          "SHIMI %03hu %s::%s RX peer %s, mac %s", 
                           id_, __MODULE__, __func__, 
                           peerId.c_str(), 
                           macAddress.to_string().c_str());
@@ -356,7 +356,7 @@ void EMANE::R2RI::DLEP::DlepClientImpl::linkchar_request(const std::string & pee
 {
     LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s peer %s, mac %s, items %zu", 
+                          "SHIMI %03hu %s::%s RX peer %s, mac %s, items %zu", 
                           id_, __MODULE__, __func__, 
                           peerId.c_str(), 
                           macAddress.to_string().c_str(), 
@@ -366,7 +366,7 @@ void EMANE::R2RI::DLEP::DlepClientImpl::linkchar_request(const std::string & pee
       {
          LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s item metric type %hhu, value [%s]", 
+                          "SHIMI %03hu %s::%s RX item metric type %hhu, value [%s]", 
                           id_, __MODULE__, __func__, 
                           item.id, 
                           item.to_string().c_str());
@@ -382,7 +382,7 @@ void EMANE::R2RI::DLEP::DlepClientImpl::linkchar_reply(const std::string & peerI
 {
     LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s peer %s, mac %s, items %zu", 
+                          "SHIMI %03hu %s::%s RX peer %s, mac %s, items %zu", 
                           id_, __MODULE__, __func__, 
                           peerId.c_str(), 
                           macAddress.to_string().c_str(), 
@@ -392,7 +392,7 @@ void EMANE::R2RI::DLEP::DlepClientImpl::linkchar_reply(const std::string & peerI
       {
          LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                           DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s item metric type %hhu, value [%s]", 
+                          "SHIMI %03hu %s::%s RX item metric type %hhu, value [%s]", 
                           id_, __MODULE__, __func__, 
                           item.id, 
                           item.to_string().c_str());
@@ -409,7 +409,7 @@ bool EMANE::R2RI::DLEP::DlepClientImpl::send_peer_update(const LLDLEP::DataItems
 
    LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                            DEBUG_LEVEL,
-                           "SHIMI %03hu %s::%s status %s", 
+                           "SHIMI %03hu %s::%s TX status %s", 
                            id_, __MODULE__, __func__, 
                            ReturnStatusToString(status));
 
@@ -424,7 +424,7 @@ bool EMANE::R2RI::DLEP::DlepClientImpl::send_destination_up(const LLDLEP::DlepMa
 
    LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                            DEBUG_LEVEL,
-                           "SHIMI %03hu %s::%s status %s", 
+                           "SHIMI %03hu %s::%s TX status %s", 
                            id_, __MODULE__, __func__, 
                            ReturnStatusToString(status));
 
@@ -439,7 +439,7 @@ bool EMANE::R2RI::DLEP::DlepClientImpl::send_destination_update(const LLDLEP::Dl
 
    LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                            DEBUG_LEVEL,
-                           "SHIMI %03hu %s::%s status %s", 
+                           "SHIMI %03hu %s::%s TX status %s", 
                            id_, __MODULE__, __func__, 
                            ReturnStatusToString(status));
 
@@ -453,7 +453,7 @@ bool EMANE::R2RI::DLEP::DlepClientImpl::send_destination_down(const LLDLEP::Dlep
 
    LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                            DEBUG_LEVEL,
-                           "SHIMI %03hu %s::%s status %s", 
+                           "SHIMI %03hu %s::%s TX status %s", 
                            id_, __MODULE__, __func__, 
                            ReturnStatusToString(status));
 
@@ -479,7 +479,7 @@ EMANE::R2RI::DLEP::DlepClientImpl::load_config_i()
             {
               dlepConfigItems_[item.second.alias] = boost::lexical_cast<bool>(item.second.value);
             }
-          // string /filename
+          // string or filename
           else if(item.second.type == "s" || item.second.type == "f")
             {
               dlepConfigItems_[item.second.alias] = std::string(item.second.value);
@@ -492,7 +492,7 @@ EMANE::R2RI::DLEP::DlepClientImpl::load_config_i()
           // int vector
           else if (item.second.type == "iv")
             {
-               dlepConfigItems_[item.second.alias] = item.second.to_iv();
+              dlepConfigItems_[item.second.alias] = item.second.to_iv();
             }
           else
             {
