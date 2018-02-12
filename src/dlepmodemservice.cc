@@ -809,8 +809,10 @@ void EMANE::R2RI::DLEP::ModemService::load_destination_metrics_i(LLDLEP::DataIte
    // rlq Tx
    dataItems.push_back(getDataItem_i(values.idRLQTx, values.valRLQTx));
 
-   // adv lan
+#if 0
+   // adv lan example
    dataItems.push_back(getDataItem_i(values.idIPv4AdvLan, values.valIPv4AdvLan));
+#endif
    
    for(auto & item : dataItems)
     {
