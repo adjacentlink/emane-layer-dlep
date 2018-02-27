@@ -69,6 +69,8 @@ namespace EMANE
 
         void handleControlMessages(const ControlMessages & controlMessages);
 
+        bool filterDataMessages(DownstreamPacket & pkt);
+
         void configure(const ConfigurationUpdate & update);
 
         void start();
@@ -160,6 +162,8 @@ namespace EMANE
         float fSINRMax_;
 
         bool destinationAdvertisementEnable_;
+
+        std::string sDiscoverymcastaddress_;
       };
     }
   }
