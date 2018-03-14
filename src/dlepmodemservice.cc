@@ -273,9 +273,9 @@ void EMANE::R2RI::DLEP::ModemService::configure(const ConfigurationUpdate & upda
                      destinationAdvertisementEnable_ = iter->second.value != "0";
                   }
                 else if(item.first == "discoverymcastaddress")
-                  {
-                    sDiscoverymcastaddress_ = iter->second.value.c_str();
-                  }
+                {
+                  sDiscoverymcastaddress_ = iter->second.value.c_str();
+                }
 
                 LOGGER_STANDARD_LOGGING(pPlatformService_->logService(), 
                                         INFO_LEVEL,
@@ -901,6 +901,7 @@ int EMANE::R2RI::DLEP::ModemService::getRLQ_i(const std::uint16_t nbr,
 
 bool EMANE::R2RI::DLEP::ModemService::filterDataMessages(EMANE::DownstreamPacket & pkt)
 {
+  bool ifFilter = false;
   //get vector with *base and len of the packet
   auto vIO = pkt.getVectorIO();
   auto v = vIO[0];
@@ -908,7 +909,7 @@ bool EMANE::R2RI::DLEP::ModemService::filterDataMessages(EMANE::DownstreamPacket
   //get ipv4 addr destination of the packet
   std::uint32_t addrV = ((Utils::Ip4Header*) ((Utils::EtherHeader*) v.iov_base + 1))->u32Ipv4dst;
 
-  //get the ipv4 nulti cast addr
+  //get the ipv4 multi cast addr
   std::uint32_t uMulticastAddr;
   const char * cAddress = sDiscoverymcastaddress_.c_str();
   inet_aton(cAddress, (in_addr*) &uMulticastAddr);
@@ -926,8 +927,8 @@ bool EMANE::R2RI::DLEP::ModemService::filterDataMessages(EMANE::DownstreamPacket
                           "SHIMI %03hu %s::%s multicast packet dropped", 
                           id_, __MODULE__, __func__);
 
-    return false;
+    ifFilter = true;
   }
 
-  return true;
+  return ifFilter;
 }

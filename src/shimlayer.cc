@@ -383,7 +383,7 @@ void EMANE::R2RI::DLEP::ShimLayer::processDownstreamPacket(DownstreamPacket & pk
                           id_, __MODULE__, __func__, pkt.length(), msgs.size());
 
   //if dst addr is a multicast addr, drop pkt
-  if(dlepModemService_.filterDataMessages(pkt))
+  if(!dlepModemService_.filterDataMessages(pkt))
   {
     // pass thru
     sendDownstreamPacket(pkt, clone(msgs));
