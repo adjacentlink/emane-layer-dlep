@@ -907,13 +907,13 @@ bool EMANE::R2RI::DLEP::ModemService::filterIPv4DataMessages(EMANE::DownstreamPa
   auto v = vIO[0];
   
   //check IP version
-  std::uint8_t pktIPversion = Utils::get_ip_version(((Utils::Ip4Header*) ((Utils::EtherHeader*) v.iov_base + 1))->u8Ipv4vhl);
+  const std::uint16_t pktEthProtocol = Utils::get_protocol(((Utils::EtherHeader*) v.iov_base));
   LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
                             DEBUG_LEVEL,
-                            "SHIMI %03hu %s::%s IPv = %u", 
-                            id_, __MODULE__, __func__, pktIPversion);
-                            
-  if(pktIPversion == 4)
+                            "SHIMI %03hu %s::%s pkt's pktEthProtocol = %u ETH_P_IPV4 = %u", 
+                            id_, __MODULE__, __func__, pktEthProtocol, Utils::ETH_P_IPV4);
+
+  if(pktEthProtocol == Utils::ETH_P_IPV4)
   {
     //get ipv4 addr destination of the packet
     std::uint32_t addrV = ((Utils::Ip4Header*) ((Utils::EtherHeader*) v.iov_base + 1))->u32Ipv4dst;
