@@ -69,7 +69,8 @@ namespace EMANE
 
         void handleControlMessages(const ControlMessages & controlMessages);
 
-        bool filterDataMessages(DownstreamPacket & pkt);
+        // filter IPv4 data packets by address (mcast discovery address)
+        bool filterIPv4DataMessages(DownstreamPacket & pkt);
 
         void configure(const ConfigurationUpdate & update);
 

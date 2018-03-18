@@ -899,35 +899,45 @@ int EMANE::R2RI::DLEP::ModemService::getRLQ_i(const std::uint16_t nbr,
   return iRLQ;
 }
 
-bool EMANE::R2RI::DLEP::ModemService::filterDataMessages(EMANE::DownstreamPacket & pkt)
+bool EMANE::R2RI::DLEP::ModemService::filterIPv4DataMessages(EMANE::DownstreamPacket & pkt)
 {
   bool ifFilter = false;
   //get vector with *base and len of the packet
   auto vIO = pkt.getVectorIO();
   auto v = vIO[0];
   
-  //get ipv4 addr destination of the packet
-  std::uint32_t addrV = ((Utils::Ip4Header*) ((Utils::EtherHeader*) v.iov_base + 1))->u32Ipv4dst;
-
-  //get the ipv4 multi cast addr
-  std::uint32_t uMulticastAddr;
-  const char * cAddress = sDiscoverymcastaddress_.c_str();
-  inet_aton(cAddress, (in_addr*) &uMulticastAddr);
-
-   LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
-                          DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s packetAddr = %u mcastAddr = %u", 
-                          id_, __MODULE__, __func__, addrV, uMulticastAddr);
-
-  //check if the packet's dst addr is a multicast addr, id so - DROP
-  if(addrV == uMulticastAddr)
+  //check IP version
+  std::uint8_t pktIPversion = Utils::get_ip_version(((Utils::Ip4Header*) ((Utils::EtherHeader*) v.iov_base + 1))->u8Ipv4vhl);
+  LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
+                            DEBUG_LEVEL,
+                            "SHIMI %03hu %s::%s IPv = %u", 
+                            id_, __MODULE__, __func__, pktIPversion);
+                            
+  if(pktIPversion == 4)
   {
-    LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
-                          DEBUG_LEVEL,
-                          "SHIMI %03hu %s::%s multicast packet dropped", 
-                          id_, __MODULE__, __func__);
+    //get ipv4 addr destination of the packet
+    std::uint32_t addrV = ((Utils::Ip4Header*) ((Utils::EtherHeader*) v.iov_base + 1))->u32Ipv4dst;
 
-    ifFilter = true;
+    //get the ipv4 multi cast addr
+    std::uint32_t uMulticastAddr;
+    const char * cAddress = sDiscoverymcastaddress_.c_str();
+    inet_aton(cAddress, (in_addr*) &uMulticastAddr);
+
+    LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
+                            DEBUG_LEVEL,
+                            "SHIMI %03hu %s::%s packetAddr = %u mcastAddr = %u", 
+                            id_, __MODULE__, __func__, addrV, uMulticastAddr);
+
+    //check if the packet's dst addr is a multicast addr, id so - DROP
+    if(addrV == uMulticastAddr)
+    {
+      LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
+                            DEBUG_LEVEL,
+                            "SHIMI %03hu %s::%s multicast packet dropped", 
+                            id_, __MODULE__, __func__);
+
+      ifFilter = true;
+    }
   }
 
   return ifFilter;
