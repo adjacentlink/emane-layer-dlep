@@ -382,8 +382,12 @@ void EMANE::R2RI::DLEP::ShimLayer::processDownstreamPacket(DownstreamPacket & pk
                           "SHIMI %03hu %s::%s pass thru pkt len %zu and %zu msgs", 
                           id_, __MODULE__, __func__, pkt.length(), msgs.size());
 
-  // pass thru
-  sendDownstreamPacket(pkt, clone(msgs));
+  //if dst addr is a multicast addr, drop pkt
+  if(!dlepModemService_.filterIPv4DataMessages(pkt))
+  {
+    // pass thru
+    sendDownstreamPacket(pkt, clone(msgs));
+  }
 }
 
 

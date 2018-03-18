@@ -113,7 +113,8 @@ EMANE::R2RI::DLEP::ModemService::ModemService(NEMId id,
   avgQueueDelayMicroseconds_{},
   fSINRMin_{0.0f},
   fSINRMax_{20.0f},
-  destinationAdvertisementEnable_{false}
+  destinationAdvertisementEnable_{false},
+  sDiscoverymcastaddress_{}
 {
   memset(&etherOUI_, 0x0, sizeof(etherOUI_)); 
 
@@ -271,6 +272,10 @@ void EMANE::R2RI::DLEP::ModemService::configure(const ConfigurationUpdate & upda
                   {
                      destinationAdvertisementEnable_ = iter->second.value != "0";
                   }
+                else if(item.first == "discoverymcastaddress")
+                {
+                  sDiscoverymcastaddress_ = iter->second.value.c_str();
+                }
 
                 LOGGER_STANDARD_LOGGING(pPlatformService_->logService(), 
                                         INFO_LEVEL,
@@ -892,4 +897,48 @@ int EMANE::R2RI::DLEP::ModemService::getRLQ_i(const std::uint16_t nbr,
                           iRLQ); 
 
   return iRLQ;
+}
+
+bool EMANE::R2RI::DLEP::ModemService::filterIPv4DataMessages(EMANE::DownstreamPacket & pkt)
+{
+  bool ifFilter = false;
+  //get vector with *base and len of the packet
+  auto vIO = pkt.getVectorIO();
+  auto v = vIO[0];
+  
+  //check IP version
+  const std::uint16_t pktEthProtocol = Utils::get_protocol(((Utils::EtherHeader*) v.iov_base));
+  LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
+                            DEBUG_LEVEL,
+                            "SHIMI %03hu %s::%s pkt's pktEthProtocol = %u ETH_P_IPV4 = %u", 
+                            id_, __MODULE__, __func__, pktEthProtocol, Utils::ETH_P_IPV4);
+
+  if(pktEthProtocol == Utils::ETH_P_IPV4)
+  {
+    //get ipv4 addr destination of the packet
+    std::uint32_t addrV = ((Utils::Ip4Header*) ((Utils::EtherHeader*) v.iov_base + 1))->u32Ipv4dst;
+
+    //get the ipv4 multi cast addr
+    std::uint32_t uMulticastAddr;
+    const char * cAddress = sDiscoverymcastaddress_.c_str();
+    inet_aton(cAddress, (in_addr*) &uMulticastAddr);
+
+    LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
+                            DEBUG_LEVEL,
+                            "SHIMI %03hu %s::%s packetAddr = %u mcastAddr = %u", 
+                            id_, __MODULE__, __func__, addrV, uMulticastAddr);
+
+    //check if the packet's dst addr is a multicast addr, id so - DROP
+    if(addrV == uMulticastAddr)
+    {
+      LOGGER_STANDARD_LOGGING(pPlatformService_->logService(),
+                            DEBUG_LEVEL,
+                            "SHIMI %03hu %s::%s multicast packet dropped", 
+                            id_, __MODULE__, __func__);
+
+      ifFilter = true;
+    }
+  }
+
+  return ifFilter;
 }

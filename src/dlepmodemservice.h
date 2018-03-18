@@ -69,6 +69,9 @@ namespace EMANE
 
         void handleControlMessages(const ControlMessages & controlMessages);
 
+        // filter IPv4 data packets by address (mcast discovery address)
+        bool filterIPv4DataMessages(DownstreamPacket & pkt);
+
         void configure(const ConfigurationUpdate & update);
 
         void start();
@@ -160,6 +163,8 @@ namespace EMANE
         float fSINRMax_;
 
         bool destinationAdvertisementEnable_;
+
+        std::string sDiscoverymcastaddress_;
       };
     }
   }
